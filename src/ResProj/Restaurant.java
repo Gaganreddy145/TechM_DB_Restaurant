@@ -13,7 +13,7 @@ import java.util.*;
 public class Restaurant {
 
 	private static String DB_USERNAME = "root";
-	private static String DB_PASSWORD = "gaganeswar145";
+	private static String DB_PASSWORD = "gaga*****";
 	private static String DB_URL = "jdbc:mysql://127.0.0.1:3306/restaurant";
 	private String name;
 	List<Customer> lc;
