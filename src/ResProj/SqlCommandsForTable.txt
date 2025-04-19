@@ -1,0 +1,5 @@
+create table customer(id int auto_increment,name varchar(30),primary key(id));
+
+create table menu(mid int auto_increment,name varchar(30),price double,primary key(mid));
+
+create table orders(oid int,omid int,cid int,quantity int,odate date,primary key(oid),foreign key(omid) references menu(mid),foreign key(cid) references customer(id));
