@@ -1,0 +1,21 @@
+# Ignore compiled files
+bin/
+*.class
+
+# Ignore IDE-specific files
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+
+# Ignore build directories
+target/
+build/
+
+# Ignore logs
+*.log
+
+# Ignore Referenced Libraries (external JARs)
+lib/
+*.jar
