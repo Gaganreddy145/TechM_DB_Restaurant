@@ -13,7 +13,7 @@ import java.util.*;
 public class Restaurant {
 
 	private static String DB_USERNAME = "root";
-	private static String DB_PASSWORD = "gag***";
+	private static String DB_PASSWORD = "password";
 
 	private static String DB_URL = "jdbc:mysql://127.0.0.1:3306/restaurant";
 	private String name;
@@ -42,13 +42,30 @@ public class Restaurant {
 		this.name = name;
 	}
 
-	public void updateMenuItem(int id, double price) {
+	public void updateMenuItem(int id, double price,Connection conn) throws SQLException {
+		Menu exist = null;
 		for (Menu m : lm) {
 			if (m.getId() == id) {
-				m.setPrice(price);
-				System.out.println("Successfully updated!!!");
-				return;
+				exist = m;
+				break;
+//				m.setPrice(price);
+//				System.out.println("Successfully updated!!!");
+//				return;
 			}
+		}
+		if(exist != null) {
+			String s = "update menu set price = ? where mid = ?";
+			PreparedStatement ps = conn.prepareStatement(s);
+			ps.setDouble(1, price);
+			ps.setInt(2, id);
+			int res = ps.executeUpdate();
+			if(res > 0) {
+				exist.setPrice(price);
+				System.out.println("Successfully updated!!!");
+			}else {
+				System.out.println("Failed to update");
+			}
+			return;
 		}
 		System.out.println("No such item!!!");
 	}
@@ -231,7 +248,7 @@ public class Restaurant {
 			System.out.print(
 					"1.Add Menu Item to Restaurant 2.Add Customer 3.Display Menu\n4.Display Customers 5.Select Customer 6.Create Order"
 							+ "\n7.Calculate Bill 8.Display Orders 9.Today's Orders:"
-							+ "\n10.Today's highest ordered item:");
+							+ "\n10.Today's highest ordered item\n11.Update Menu Item Price:");
 			int choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -338,6 +355,19 @@ public class Restaurant {
 				} else {
 					System.out.println(highestOrderedItemToday);
 				}
+				break;
+			case 11:
+				System.out.print("Enter the id of the item to be updated:");
+				int itemId = sc.nextInt();
+				System.out.print("Enter the price of the item:");
+				double priceItem = sc.nextDouble();
+				try {
+					r.updateMenuItem(itemId, priceItem, conn);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
 			}
 			System.out.print("Do u want to continue[1|0]:");
 			conti = sc.nextInt();
